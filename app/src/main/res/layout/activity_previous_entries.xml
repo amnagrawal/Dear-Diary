@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.aman.deardiary.WeekView">
+    tools:context=".PreviousEntries">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
@@ -32,7 +32,7 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_week_view" />
+    <include layout="@layout/content_previous_entries" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

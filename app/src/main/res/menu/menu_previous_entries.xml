@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.aman.deardiary.WeekView">
+    tools:context=".PreviousEntries">
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
