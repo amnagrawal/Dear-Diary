@@ -20,8 +20,8 @@
         </activity>
         
         <activity
-            android:name=".WeekView"
-            android:label="@string/title_activity_week_view"
+            android:name=".PreviousEntries"
+            android:label="@string/title_activity_recent_entries"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data

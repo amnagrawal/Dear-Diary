@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if(id == R.id.weekLayout) {
-            startActivity(new Intent(this, WeekView.class));
+            startActivity(new Intent(this, PreviousEntries.class));
             return true;
         }
 
