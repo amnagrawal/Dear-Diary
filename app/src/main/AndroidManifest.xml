@@ -18,7 +18,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
         <activity
             android:name=".PreviousEntries"
             android:label="@string/title_activity_recent_entries"
@@ -28,6 +27,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.aman.deardiary.MainActivity" />
         </activity>
+        <activity
+            android:name=".NewEntry"
+            android:label="@string/title_activity_new_entry"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
