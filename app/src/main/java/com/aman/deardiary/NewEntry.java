@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.Calendar;
@@ -18,6 +19,7 @@ public class NewEntry extends AppCompatActivity {
     TextView date;
     DatePickerDialog datePickerDialog;
     Calendar newCal;
+    EditText content;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,14 +48,16 @@ public class NewEntry extends AppCompatActivity {
                         Calendar newDate = Calendar.getInstance();
                         newDate.set(year, monthOfYear, dayOfMonth);
                         date.setText("Date: " + newDate.get(Calendar.DATE) + "-" + newDate.get(Calendar.MONTH)
-                                + "-" + newDate.get(Calendar.YEAR) + ", ");
+                                + "-" + newDate.get(Calendar.YEAR));
                         newCal = newDate;
                     }
                 }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+                datePickerDialog.getDatePicker().setMaxDate(Calendar.getInstance().getTimeInMillis());
                 datePickerDialog.show();
             }
         });
 
+        content = (EditText) findViewById(R.id.content_new_entry);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -63,11 +67,15 @@ public class NewEntry extends AppCompatActivity {
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         // Read values from the "savedInstanceState"-object and put them in your textview
+        date.setText(savedInstanceState.getString("Date"));
+        content.setText(savedInstanceState.getString("Content"));
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
         // Save the values you need from your textview into "outState"-object
-        super.onSaveInstanceState(outState);
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putString("Date", date.getText().toString());
+        savedInstanceState.putString("Content", content.getText().toString());
     }
 }
