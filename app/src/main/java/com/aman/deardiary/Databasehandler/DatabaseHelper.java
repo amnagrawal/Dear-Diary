@@ -9,8 +9,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.SystemClock;
 import android.util.Log;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by aman on 30/12/15.
@@ -21,7 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String LOG = "DatabaseHelper";
 
     // Database Version
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     // Database Name
     private static final String DATABASE_NAME = "DiaryDB";
@@ -70,6 +73,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db= this.getWritableDatabase();
         ContentValues values = new ContentValues();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        String checkprev = "SELECT * FROM " + TABLE_NAME + " WHERE " + DATE_OF_ENTRY +
+                "=\'" + sdf.format(diaryEntry.getDate())+"\'";
+
+        Cursor cursor = db.rawQuery(checkprev, null);
+        if(cursor!=null && cursor.moveToFirst()) {
+            db.delete(TABLE_NAME, DATE_OF_ENTRY + "=?", new String[]{sdf.format(diaryEntry.getDate())});
+        }
+
         values.put(CREATED_AT, sdf.format(diaryEntry.getCreatedAt()));
         values.put(DATE_OF_ENTRY, sdf.format(diaryEntry.getDate()));
         values.put(ENTRY_CONTENTS, diaryEntry.getContent());
@@ -93,14 +105,47 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         {
             de.setDate(date);
             de.setContent(c.getString(c.getColumnIndex(ENTRY_CONTENTS)));
-            de.setCreatedAt(date);
+            try {
+                de.setCreatedAt(sdf.parse(c.getString(c.getColumnIndex(CREATED_AT))));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
+        Log.i(LOG, de.getContent()+sdf.format(de.getDate()));
 
         if (c != null) {
             c.close();
         }
         db.close();
         return de;
+    }
+
+    public List<DiaryEntry> getAllEntries() {
+        List<DiaryEntry> entries = new ArrayList<>();
+        String selectQuery = "SELECT * FROM " + TABLE_NAME + " ORDER BY " + CREATED_AT;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        DiaryEntry entry = null;
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if(cursor!=null && cursor.moveToFirst()) {
+            do{
+                entry = new DiaryEntry();
+                try {
+                    entry.setDate(sdf.parse(cursor.getString(cursor.getColumnIndex(DATE_OF_ENTRY))));
+                    entry.setCreatedAt(sdf.parse(cursor.getString(cursor.getColumnIndex(CREATED_AT))));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                entry.setContent(cursor.getString(cursor.getColumnIndex(ENTRY_CONTENTS)));
+                entries.add(entry);
+            }while(cursor.moveToNext());
+
+            cursor.close();
+        }
+        return entries;
     }
 
     // closing database

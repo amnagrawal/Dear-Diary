@@ -100,14 +100,12 @@ public class NewEntry extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        // Read values from the "savedInstanceState"-object and put them in your textview
         date.setText(savedInstanceState.getString("Date"));
         content.setText(savedInstanceState.getString("Content"));
     }
 
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState) {
-        // Save the values you need from your textview into "outState"-object
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putString("Date", date.getText().toString());
         savedInstanceState.putString("Content", content.getText().toString());

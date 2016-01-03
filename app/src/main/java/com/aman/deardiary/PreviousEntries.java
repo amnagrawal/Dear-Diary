@@ -9,13 +9,22 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.aman.deardiary.Databasehandler.DatabaseHelper;
+import com.aman.deardiary.Databasehandler.DiaryEntry;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PreviousEntries extends AppCompatActivity {
 
+    List<DiaryEntry> diaryEntries;
+    DatabaseHelper dbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        dbHelper = new DatabaseHelper(getApplicationContext());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_previous_entries);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -40,13 +49,15 @@ public class PreviousEntries extends AppCompatActivity {
         recList.setLayoutManager(llm);
 
         List<ListItemInfo> listItemInfos = new ArrayList<>();
-        listItemInfos.add(new ListItemInfo("16-01-1994", "my bday"));
-        listItemInfos.add(new ListItemInfo("23-05-1998", "bro's bday"));
-        listItemInfos.add(new ListItemInfo("04-06-1966", "dad's bday"));
-        listItemInfos.add(new ListItemInfo("05-05-1966", "mom's bday"));
-        listItemInfos.add(new ListItemInfo("26-10-1995", "ghissu's bday"));
-        listItemInfos.add(new ListItemInfo("17-03-1995", "pitthu's bday"));
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        diaryEntries = dbHelper.getAllEntries();
+        for(DiaryEntry entry : diaryEntries) {
+            listItemInfos.add(new ListItemInfo(sdf.format(entry.getDate()), entry.getContent()));
+        }
         recList.setAdapter(new ListEntriesAdapter(listItemInfos));
         recList.setNestedScrollingEnabled(false);
+
+        dbHelper.close();
     }
 }

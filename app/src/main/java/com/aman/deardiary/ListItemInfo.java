@@ -36,7 +36,6 @@ public class ListItemInfo {
     }
 
     public String getDate() {
-
         return date;
     }
 
