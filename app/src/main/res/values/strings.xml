@@ -7,4 +7,5 @@
         "Material is the metaphor."
     </string>
     <string name="title_activity_new_entry">NewEntry</string>
+    <string name="title_activity_view__entry">View Entry</string>
 </resources>

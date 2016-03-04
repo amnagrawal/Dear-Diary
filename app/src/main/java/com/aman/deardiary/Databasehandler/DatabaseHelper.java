@@ -74,13 +74,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-        String checkprev = "SELECT * FROM " + TABLE_NAME + " WHERE " + DATE_OF_ENTRY +
+        /*String checkprev = "SELECT * FROM " + TABLE_NAME + " WHERE " + DATE_OF_ENTRY +
                 "=\'" + sdf.format(diaryEntry.getDate())+"\'";
 
         Cursor cursor = db.rawQuery(checkprev, null);
         if(cursor!=null && cursor.moveToFirst()) {
             db.delete(TABLE_NAME, DATE_OF_ENTRY + "=?", new String[]{sdf.format(diaryEntry.getDate())});
-        }
+        }*/
 
         values.put(CREATED_AT, sdf.format(diaryEntry.getCreatedAt()));
         values.put(DATE_OF_ENTRY, sdf.format(diaryEntry.getDate()));
@@ -88,6 +88,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         long entry_id = db.insertOrThrow(TABLE_NAME, null, values);
 
+        db.close();
         return entry_id;
     }
 
@@ -122,7 +123,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public List<DiaryEntry> getAllEntries() {
         List<DiaryEntry> entries = new ArrayList<>();
-        String selectQuery = "SELECT * FROM " + TABLE_NAME + " ORDER BY " + CREATED_AT;
+        String selectQuery = "SELECT * FROM " + TABLE_NAME + " ORDER BY " + CREATED_AT + " DESC";
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.rawQuery(selectQuery, null);

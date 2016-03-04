@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import com.aman.deardiary.Databasehandler.DatabaseHelper;
@@ -40,7 +41,7 @@ public class PreviousEntries extends AppCompatActivity {
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        RecyclerView recList = (RecyclerView) findViewById(R.id.listentries);
+        final RecyclerView recList = (RecyclerView) findViewById(R.id.listentries);
         recList.setHasFixedSize(true);
 
         LinearLayoutManager llm = new org.solovyev.android.views.llm.
@@ -53,11 +54,12 @@ public class PreviousEntries extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         diaryEntries = dbHelper.getAllEntries();
         for(DiaryEntry entry : diaryEntries) {
+            Log.i("content list:", entry.getContent());
             listItemInfos.add(new ListItemInfo(sdf.format(entry.getDate()), entry.getContent()));
         }
+        dbHelper.close();
+
         recList.setAdapter(new ListEntriesAdapter(listItemInfos));
         recList.setNestedScrollingEnabled(false);
-
-        dbHelper.close();
     }
 }
